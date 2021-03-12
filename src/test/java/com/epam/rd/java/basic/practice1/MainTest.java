@@ -10,6 +10,6 @@ public class MainTest {
     public void shouldTestMain() {
         String[] args = {"1", "2"};
         Main.main(args);
-        assertEquals(args[0], "1");
+        assertEquals("1" ,args[0]);
     }
 }
