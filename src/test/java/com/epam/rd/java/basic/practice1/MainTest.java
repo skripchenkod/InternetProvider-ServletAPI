@@ -1,21 +1,15 @@
 package com.epam.rd.java.basic.practice1;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import static org.junit.Assert.assertEquals;
 
 public class MainTest {
 
     @Test
     public void shouldTestMain() {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        PrintStream printStream = new PrintStream(byteArrayOutputStream);
-
-        Main.printHelloWorld(printStream);
-        String actualString = byteArrayOutputStream.toString();
-
-        Assert.assertEquals("Hello, World", actualString );
+        String[] args = {"1", "2"};
+        Main.main(args);
+        assertEquals("1" ,args[0]);
     }
 }
