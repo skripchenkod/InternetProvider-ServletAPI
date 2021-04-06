@@ -18,6 +18,10 @@
           <option name="url" value="https://rep.lab.epam.com/api_client/wnyscvux-task3.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://rep.lab.epam.com/api_client/wnyscvux-task4.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="$USER_HOME$" />
