@@ -9,6 +9,6 @@ public class UserService {
     UserDaoJdbcImpl userDaoJdbc = new UserDaoJdbcImpl();
 
     public List<UserEntity> getAllUsers(){
-       return userDaoJdbc.findAll();
+        return userDaoJdbc.findAll();
     }
 }
