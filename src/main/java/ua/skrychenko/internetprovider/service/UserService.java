@@ -11,4 +11,8 @@ public class UserService {
     public List<UserEntity> getAllUsers() {
         return userDaoJdbc.findAll();
     }
+
+    public void saveUser(String userName, String password) {
+        userDaoJdbc.saveUser(userName, password);
+    }
 }
