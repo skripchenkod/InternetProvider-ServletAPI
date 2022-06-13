@@ -20,7 +20,7 @@ public class PostgresConfig {
                     instance.setUser("postgres");
                     instance.setPassword("postgres");
                     instance.setUrl("jdbc:postgresql://localhost:5432/Internet-provider");
-                }
+                 }
             }
         }
 
