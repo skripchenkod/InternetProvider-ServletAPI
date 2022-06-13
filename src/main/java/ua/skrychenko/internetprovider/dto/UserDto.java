@@ -1,8 +1,8 @@
 package ua.skrychenko.internetprovider.dto;
 
 public class UserDto {
-   private String userName;
-   private String password;
+    private String userName;
+    private String password;
 
     public UserDto(String userName, String password) {
         this.userName = userName;
