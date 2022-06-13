@@ -7,5 +7,4 @@ import java.util.List;
 public interface UserDao {
     List<UserEntity> findAll();
     void saveUser(String userName, String password);
-
 }
