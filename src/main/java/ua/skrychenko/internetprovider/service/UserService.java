@@ -8,7 +8,7 @@ import java.util.List;
 public class UserService {
     UserDaoJdbcImpl userDaoJdbc = new UserDaoJdbcImpl();
 
-    public List<UserEntity> getAllUsers(){
+    public List<UserEntity> getAllUsers() {
         return userDaoJdbc.findAll();
     }
 }
