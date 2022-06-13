@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/users")
-
 public class UserServlet extends HttpServlet {
+
     private final Gson gson = new Gson();
 
     UserService service = new UserService();
@@ -22,8 +22,8 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<UserEntity> users = service.getAllUsers();
-        String users1 = this.gson.toJson(users);
+        String usersJson = this.gson.toJson(users);
 
-        resp.getWriter().write(users1);
+        resp.getWriter().write(usersJson);
     }
 }
