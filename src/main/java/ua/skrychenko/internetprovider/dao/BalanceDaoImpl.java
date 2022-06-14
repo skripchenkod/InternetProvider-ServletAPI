@@ -18,7 +18,7 @@ public class BalanceDaoImpl implements BalanceDao {
     private Connection connection;
 
     @Override
-    public int createBalanceAndReturnID(UserEntity userEntity) {
+    public int createBalance(UserEntity userEntity) {
         try {
             this.connection = dataSource.getConnection();
         } catch (SQLException e) {

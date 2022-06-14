@@ -17,10 +17,11 @@ public class UserService {
 
     public String saveUser(UserDto userDto) {
         String isExist = "User is exist";
-        String success = "User is exist";
+        String success = "Registration is success";
         if (userDaoJdbc.isExistUser(userDto.getUserName())) {
 
             userDaoJdbc.saveUser(userMapper.registrationUserDtoToEntity(userDto));
+
             return success;
         }
         return isExist;

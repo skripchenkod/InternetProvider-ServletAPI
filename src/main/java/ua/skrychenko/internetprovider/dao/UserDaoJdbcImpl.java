@@ -52,7 +52,7 @@ public class UserDaoJdbcImpl implements UserDao {
             PreparedStatement ps = connection.prepareStatement(SQL_SAVE_USER);
             ps.setString(1, userEntity.getUserName());
             ps.setString(2, userEntity.getPassword());
-            ps.setInt(3, balanceDao.createBalanceAndReturnID(userEntity));
+            ps.setInt(3, balanceDao.createBalance(userEntity));
             ps.setInt(4, userEntity.getRole().getId());
             ps.execute();
         } catch (SQLException e) {
