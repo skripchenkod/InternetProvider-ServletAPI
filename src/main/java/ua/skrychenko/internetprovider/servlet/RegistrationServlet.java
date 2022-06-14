@@ -22,6 +22,6 @@ public class RegistrationServlet extends HttpServlet {
         ObjectMapper objectMapper = new ObjectMapper();
         UserDto userDto = objectMapper.readValue(req.getInputStream(), UserDto.class);
 
-        userService.saveUser(userDto);
+        resp.getWriter().write(userService.saveUser(userDto));
     }
 }
