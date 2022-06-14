@@ -10,4 +10,6 @@ public interface UserDao {
     void saveUser(UserEntity userEntity);
 
     boolean isExistUser(String userName);
+
+    String selectRole(UserEntity userEntity);
 }
