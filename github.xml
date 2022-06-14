@@ -1,0 +1,7 @@
+<application>
+  <component name="GithubAccounts">
+    <account id="d5c28883-7815-4de8-8647-0515b9923ab2" name="skripchenkod">
+      <server host="github.com" />
+    </account>
+  </component>
+</application>
