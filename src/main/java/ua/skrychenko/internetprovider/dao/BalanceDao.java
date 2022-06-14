@@ -9,6 +9,4 @@ public interface BalanceDao {
 
     void topDownBalance(int userID, int sum);
 
-    void editStatus(String userName, boolean status);
-
 }

@@ -19,27 +19,27 @@ public class AdminPageServlet extends HttpServlet {
         String name = req.getParameter("name");
         String idTariff = req.getParameter("idName");
         String userName = req.getParameter("userName");
-        if (name != null){
+        if (name != null) {
             adminService.editNameOfTariff(idTariff, name);
         }
 
         String price = req.getParameter("price");
-        if(price != null){
+        if (price != null) {
             adminService.editPriceOfTariff(idTariff, price);
         }
 
         String delete = req.getParameter("delete");
-        if (delete != null){
+        if (delete != null) {
             adminService.deleteTariff(idTariff);
         }
 
         String registration = req.getParameter("registration");
-        if(registration != null){
+        if (registration != null) {
             req.getServletContext().getRequestDispatcher("/registration").forward(req, resp);
         }
 
         String statusOFBalance = req.getParameter("status");
-        if(statusOFBalance != null){
+        if (statusOFBalance != null) {
             adminService.editStatusOfUserBalance(userName, statusOFBalance);
         }
     }

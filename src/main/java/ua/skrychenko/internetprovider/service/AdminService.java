@@ -24,7 +24,7 @@ public class AdminService {
     }
 
     public void editStatusOfUserBalance(String userName, String statusOfBalance) {
-      boolean status =  Boolean.parseBoolean(statusOfBalance);
+        boolean status = Boolean.parseBoolean(statusOfBalance);
         userDao.editStatusOfBalance(userName, status);
     }
 }
