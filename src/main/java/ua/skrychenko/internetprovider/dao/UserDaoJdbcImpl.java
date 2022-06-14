@@ -11,7 +11,8 @@ import java.util.List;
 public class UserDaoJdbcImpl implements UserDao {
 
     private final String SQL_FIND_ALL = "SELECT * FROM users";
-    private final String SQL_SAVE_USER = "INSERT INTO users(username, password) VALUES (? , ?);";
+    private final String SQL_SAVE_USER = "INSERT INTO users(username, password, balance_id, role_id) VALUES (?, ?, ?, ?);";
+    private final String SQL_FIND_USER_BY_NAME = "SELECT * FROM users WHERE username = ?";
     private final DataSource dataSource = PostgresConfig.getInstance();
     private Connection connection;
 
@@ -40,21 +41,54 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
-    public void saveUser(String userName, String password) {
+    public void saveUser(UserEntity userEntity) {
+        BalanceDaoImpl balanceDao = new BalanceDaoImpl();
+        try {
+            this.connection = dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            PreparedStatement ps = connection.prepareStatement(SQL_SAVE_USER);
+            ps.setString(1, userEntity.getUserName());
+            ps.setString(2, userEntity.getPassword());
+            ps.setInt(3, balanceDao.createBalanceAndReturnID(userEntity));
+            ps.setInt(4, userEntity.getRole().getId());
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean isExistUser(String userName) {
         try {
             this.connection = dataSource.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        String name = null;
+
         try {
-            PreparedStatement ps = connection.prepareStatement(SQL_SAVE_USER);
+            PreparedStatement ps = connection.prepareStatement(SQL_FIND_USER_BY_NAME);
             ps.setString(1, userName);
-            ps.setString(2, password);
-            ps.execute();
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                name = rs.getString("username");
+            }
+
+            if (name == null) {
+                return true;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
+
+
 }
 
