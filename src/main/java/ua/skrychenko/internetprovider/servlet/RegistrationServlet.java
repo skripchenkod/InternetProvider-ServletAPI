@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/saveUser")
-public class SaveUserServlet extends HttpServlet {
+@WebServlet("/registration")
+public class RegistrationServlet extends HttpServlet {
 
     private UserService userService = new UserService();
 
@@ -22,6 +22,6 @@ public class SaveUserServlet extends HttpServlet {
         ObjectMapper objectMapper = new ObjectMapper();
         UserDto userDto = objectMapper.readValue(req.getInputStream(), UserDto.class);
 
-        userService.saveUser(userDto.getUserName(), userDto.getPassword());
+        resp.getWriter().write(userService.saveUser(userDto));
     }
 }

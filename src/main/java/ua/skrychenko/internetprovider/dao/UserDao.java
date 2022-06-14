@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface UserDao {
     List<UserEntity> findAll();
-    void saveUser(String userName, String password);
+
+    void saveUser(UserEntity userEntity);
+
+    boolean isExistUser(String userName);
 }
