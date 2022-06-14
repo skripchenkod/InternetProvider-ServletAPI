@@ -11,10 +11,13 @@ import java.util.List;
 public class UserDaoJdbcImpl implements UserDao {
 
     private final String SQL_FIND_ALL = "SELECT * FROM users";
-    private final String SQL_SAVE_USER = "INSERT INTO users(username, password, balance_id, role_id) VALUES (?, ?, ?, ?);";
+    private final String SQL_SAVE_USER = "INSERT INTO users(username, password, balance_id, role_id) VALUES (?, ?, ?, ?)";
     private final String SQL_FIND_USER_BY_NAME = "SELECT * FROM users WHERE username = ?";
+    private final String SQL_EDIT_STATUS = "UPDATE balance SET status = ? WHERE id = (SELECT users.balance_id FROM users WHERE username = ?)";
+
     private final DataSource dataSource = PostgresConfig.getInstance();
     private Connection connection;
+    BalanceDaoImpl balanceDao = new BalanceDaoImpl();
 
     public UserDaoJdbcImpl() {
     }
@@ -42,7 +45,6 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public void saveUser(UserEntity userEntity) {
-        BalanceDaoImpl balanceDao = new BalanceDaoImpl();
         try {
             this.connection = dataSource.getConnection();
         } catch (SQLException e) {
@@ -89,6 +91,22 @@ public class UserDaoJdbcImpl implements UserDao {
         return false;
     }
 
+    @Override
+    public void editStatusOfBalance(String userName, boolean status) {
+        try {
+            this.connection = dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        try {
+            PreparedStatement ps = connection.prepareStatement(SQL_EDIT_STATUS);
+            ps.setBoolean(1, status);
+            ps.setString(2, userName);
+            ps.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
 

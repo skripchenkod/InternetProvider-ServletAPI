@@ -4,10 +4,8 @@ import ua.skrychenko.internetprovider.config.PostgresConfig;
 import ua.skrychenko.internetprovider.entity.UserEntity;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.awt.event.PaintEvent;
+import java.sql.*;
 
 public class BalanceDaoImpl implements BalanceDao {
 
@@ -48,5 +46,9 @@ public class BalanceDaoImpl implements BalanceDao {
     @Override
     public void topDownBalance(int userID, int sum) {
 
+    }
+
+    @Override
+    public void editStatus(String userName, boolean status) {
     }
 }

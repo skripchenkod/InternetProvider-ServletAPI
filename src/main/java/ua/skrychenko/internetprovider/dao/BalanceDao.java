@@ -3,9 +3,12 @@ package ua.skrychenko.internetprovider.dao;
 import ua.skrychenko.internetprovider.entity.UserEntity;
 
 public interface BalanceDao {
-    public int createBalance(UserEntity userEntity);
+    int createBalance(UserEntity userEntity);
 
-    public void topUpBalance(int userId, int sum);
+    void topUpBalance(int userId, int sum);
 
-    public void topDownBalance(int userID, int sum);
+    void topDownBalance(int userID, int sum);
+
+    void editStatus(String userName, boolean status);
+
 }
