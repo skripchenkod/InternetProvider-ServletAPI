@@ -22,11 +22,11 @@ public class LogInServlet extends HttpServlet {
 
         String role = userService.chekUser(userDto);
 
-       if(role.equals("guest")){
-           resp.getWriter().write("You are guest");
-       }else if(role.equals("admin")){
-           resp.getWriter().write("You are admin");
-       }else resp.getWriter().write("incorrect user name or password");
+        if (role.equals("guest")) {
+            resp.getWriter().write("You are guest");
+        } else if (role.equals("admin")) {
+            resp.getWriter().write("You are admin");
+        } else resp.getWriter().write("incorrect user name or password");
     }
 
     @Override

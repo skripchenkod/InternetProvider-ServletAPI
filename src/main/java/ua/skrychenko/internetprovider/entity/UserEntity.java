@@ -13,6 +13,12 @@ public class UserEntity {
         this.password = password;
     }
 
+    public UserEntity(String userName, String password, RoleEntity role) {
+        this.userName = userName;
+        this.password = password;
+        this.role = role;
+    }
+
     public UserEntity(String userName, String password) {
         this.userName = userName;
         this.password = password;

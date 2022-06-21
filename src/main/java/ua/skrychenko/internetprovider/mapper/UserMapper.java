@@ -9,13 +9,10 @@ public class UserMapper {
 
 
     public UserEntity userDtoToEntity(UserDto userDto) {
-        UserEntity userEntity = new UserEntity(userDto.getUserName(), userDto.getPassword());
-        RoleEntity roleEntity = new RoleEntity(2);
-        userEntity.setRole(roleEntity);
-        return userEntity;
+        return new UserEntity(userDto.getUserName(), userDto.getPassword(), new RoleEntity(2));
     }
 
-    public UserEntity userDtoToEntitySignIn(UserDto userDto){
+    public UserEntity userDtoToEntitySignIn(UserDto userDto) {
         return new UserEntity(userDto.getUserName(), userDto.getPassword());
     }
 }

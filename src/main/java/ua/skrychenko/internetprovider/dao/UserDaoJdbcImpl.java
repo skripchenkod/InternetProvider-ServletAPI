@@ -23,13 +23,10 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public List<UserEntity> findAll() {
-        try {
-            this.connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         List<UserEntity> users = new ArrayList<>();
         try {
+            this.connection = dataSource.getConnection();
+
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(SQL_FIND_ALL);
             while (rs.next()) {
@@ -47,10 +44,7 @@ public class UserDaoJdbcImpl implements UserDao {
         BalanceDaoImpl balanceDao = new BalanceDaoImpl();
         try {
             this.connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
+
             PreparedStatement ps = connection.prepareStatement(SQL_SAVE_USER);
             ps.setString(1, userEntity.getUserName());
             ps.setString(2, userEntity.getPassword());
@@ -64,15 +58,10 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public boolean isExistUser(String userName) {
+        String name = null;
         try {
             this.connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        String name = null;
-
-        try {
             PreparedStatement ps = connection.prepareStatement(SQL_FIND_USER_BY_NAME);
             ps.setString(1, userName);
             ResultSet rs = ps.executeQuery();
@@ -92,15 +81,10 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     public boolean chekUser(UserEntity userEntity) {
+        String name = null;
         try {
             this.connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        String name = null;
-
-        try {
             PreparedStatement ps = connection.prepareStatement(SQL_LOGIN);
             ps.setString(1, userEntity.getUserName());
             ps.setString(2, userEntity.getPassword());
@@ -122,13 +106,10 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public String selectRole(UserEntity userEntity) {
         String unKnownRole = "unKnown";
-        if(chekUser(userEntity)){
+        if (chekUser(userEntity)) {
             try {
                 this.connection = dataSource.getConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
+
                 String role = null;
                 PreparedStatement ps = connection.prepareStatement(SQL_SELECT_ROLE);
                 ps.setString(1, userEntity.getUserName());
