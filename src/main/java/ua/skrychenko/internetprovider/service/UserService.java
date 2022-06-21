@@ -20,10 +20,14 @@ public class UserService {
         String success = "Registration is success";
         if (userDaoJdbc.isExistUser(userDto.getUserName())) {
 
-            userDaoJdbc.saveUser(userMapper.registrationUserDtoToEntity(userDto));
+            userDaoJdbc.saveUser(userMapper.userDtoToEntity(userDto));
 
             return success;
         }
         return isExist;
+    }
+
+    public String chekUser(UserDto userDto){
+       return userDaoJdbc.selectRole(userMapper.userDtoToEntitySignIn(userDto));
     }
 }

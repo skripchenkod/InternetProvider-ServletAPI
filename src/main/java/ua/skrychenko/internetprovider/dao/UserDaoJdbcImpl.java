@@ -13,6 +13,8 @@ public class UserDaoJdbcImpl implements UserDao {
     private final String SQL_FIND_ALL = "SELECT * FROM users";
     private final String SQL_SAVE_USER = "INSERT INTO users(username, password, balance_id, role_id) VALUES (?, ?, ?, ?);";
     private final String SQL_FIND_USER_BY_NAME = "SELECT * FROM users WHERE username = ?";
+    private final String SQL_LOGIN = "SELECT * FROM users WHERE username = ? AND password = ?";
+    private final String SQL_SELECT_ROLE = "SELECT name  FROM role WHERE id = (SELECT  users.role_id FROM users WHERE username = ?)";
     private final DataSource dataSource = PostgresConfig.getInstance();
     private Connection connection;
 
@@ -21,13 +23,10 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public List<UserEntity> findAll() {
-        try {
-            this.connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         List<UserEntity> users = new ArrayList<>();
         try {
+            this.connection = dataSource.getConnection();
+
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(SQL_FIND_ALL);
             while (rs.next()) {
@@ -45,10 +44,7 @@ public class UserDaoJdbcImpl implements UserDao {
         BalanceDaoImpl balanceDao = new BalanceDaoImpl();
         try {
             this.connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
+
             PreparedStatement ps = connection.prepareStatement(SQL_SAVE_USER);
             ps.setString(1, userEntity.getUserName());
             ps.setString(2, userEntity.getPassword());
@@ -62,15 +58,10 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public boolean isExistUser(String userName) {
+        String name = null;
         try {
             this.connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        String name = null;
-
-        try {
             PreparedStatement ps = connection.prepareStatement(SQL_FIND_USER_BY_NAME);
             ps.setString(1, userName);
             ResultSet rs = ps.executeQuery();
@@ -89,6 +80,51 @@ public class UserDaoJdbcImpl implements UserDao {
         return false;
     }
 
+    public boolean chekUser(UserEntity userEntity) {
+        String name = null;
+        try {
+            this.connection = dataSource.getConnection();
 
+            PreparedStatement ps = connection.prepareStatement(SQL_LOGIN);
+            ps.setString(1, userEntity.getUserName());
+            ps.setString(2, userEntity.getPassword());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                name = rs.getString("username");
+            }
+
+            if (name != null) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public String selectRole(UserEntity userEntity) {
+        String unKnownRole = "unKnown";
+        if (chekUser(userEntity)) {
+            try {
+                this.connection = dataSource.getConnection();
+
+                String role = null;
+                PreparedStatement ps = connection.prepareStatement(SQL_SELECT_ROLE);
+                ps.setString(1, userEntity.getUserName());
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    role = rs.getString("name");
+                }
+                return role;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return unKnownRole;
+    }
 }
 
