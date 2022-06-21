@@ -9,4 +9,10 @@ public class BalanceEntity {
         this.sum = sum;
         this.status = status;
     }
+
+    public BalanceEntity(int id, int sum, boolean status) {
+        this.id = id;
+        this.sum = sum;
+        this.status = status;
+    }
 }
