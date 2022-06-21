@@ -18,7 +18,7 @@ public class BalanceDto {
         this.sum = sum;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
