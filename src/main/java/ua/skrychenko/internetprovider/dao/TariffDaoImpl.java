@@ -6,11 +6,14 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TariffDaoImpl implements TariffDao {
 
-    private final String SQL_EDIT_NAME_OF_TARIFF = "UPDATE tariff SET name = ? WHERE id = ?";
-    private final String SQL_EDIT_PRICE_OF_TARIFF = "UPDATE tariff SET price = ? WHERE id = ?";
+    private final String SQL_EDIT_TARIFF = "UPDATE tariff SET";
+    private final String SUB_SQL_EDIT_TARIFF = " WHERE id = ?";
     private final String SQL_DELETE_TARIFF = "DELETE FROM tariff WHERE id = ?";
 
     private final DataSource dataSource = PostgresConfig.getInstance();
@@ -20,43 +23,38 @@ public class TariffDaoImpl implements TariffDao {
     public void editTariff(String id, String newName, String newPrice) {
         try {
             this.connection = dataSource.getConnection();
-            int idInt = Integer.parseInt(id);
-            if (!newName.equals("")) {
-                PreparedStatement ps = connection.prepareStatement(SQL_EDIT_NAME_OF_TARIFF);
+
+            String nameSql = null;
+            String priceSql = null;
+
+            if (newName != null) {
+                nameSql = " name = ?";
+            }
+            if (newPrice != null) {
+                priceSql = " price = ?";
+            }
+            String result = Stream.of(nameSql, priceSql).filter(Objects::nonNull).collect(Collectors.joining(","));
+
+            PreparedStatement ps = connection.prepareStatement(SQL_EDIT_TARIFF + result + SUB_SQL_EDIT_TARIFF);
+            if (nameSql != null && priceSql == null) {
                 ps.setString(1, newName);
-                ps.setInt(2, idInt);
+                ps.setInt(2, Integer.parseInt(id));
                 ps.execute();
             }
-            if (!newPrice.equals("")) {
-                PreparedStatement ps = connection.prepareStatement(SQL_EDIT_PRICE_OF_TARIFF);
+            if (nameSql == null && priceSql != null) {
                 ps.setInt(1, Integer.parseInt(newPrice));
-                ps.setInt(2, idInt);
-                ps.execute();
+                ps.setInt(2, Integer.parseInt(id));
+            } else {
+                ps.setString(1, newName);
+                ps.setInt(2, Integer.parseInt(newPrice));
+                ps.setInt(3, Integer.parseInt(id));
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void editPriceOfTariff(int id, int newPrice) {
-        try {
-            this.connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PreparedStatement ps = connection.prepareStatement(SQL_EDIT_PRICE_OF_TARIFF);
-            ps.setInt(1, newPrice);
-            ps.setInt(2, id);
             ps.execute();
 
-        } catch (SQLException e) {
+        } catch (SQLException | NumberFormatException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override

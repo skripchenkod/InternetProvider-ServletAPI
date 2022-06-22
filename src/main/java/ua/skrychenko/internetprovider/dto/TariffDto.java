@@ -9,6 +9,10 @@ public class TariffDto {
         this.price = price;
     }
 
+    public TariffDto(String name) {
+        this.name = name;
+    }
+
     public TariffDto() {
     }
 

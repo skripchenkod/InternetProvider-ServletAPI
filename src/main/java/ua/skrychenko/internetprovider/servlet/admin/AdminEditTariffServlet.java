@@ -1,9 +1,7 @@
 package ua.skrychenko.internetprovider.servlet.admin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ua.skrychenko.internetprovider.dao.TariffDao;
 import ua.skrychenko.internetprovider.dto.TariffDto;
-import ua.skrychenko.internetprovider.dto.UserDto;
 import ua.skrychenko.internetprovider.service.AdminPageService;
 
 
@@ -31,8 +29,8 @@ public class AdminEditTariffServlet extends HttpServlet {
         ObjectMapper objectMapper = new ObjectMapper();
         TariffDto tariffDto = objectMapper.readValue(req.getInputStream(), TariffDto.class);
 
-        service.editTariff(id, tariffDto.getName(), tariffDto.getPrice());
 
+        service.editTariff(id, tariffDto.getName(), tariffDto.getPrice());
 
     }
 }

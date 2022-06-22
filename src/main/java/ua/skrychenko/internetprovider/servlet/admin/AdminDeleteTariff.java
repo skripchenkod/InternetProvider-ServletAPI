@@ -1,7 +1,4 @@
 package ua.skrychenko.internetprovider.servlet.admin;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import ua.skrychenko.internetprovider.dto.TariffDto;
 import ua.skrychenko.internetprovider.service.AdminPageService;
 
 import javax.servlet.ServletException;
