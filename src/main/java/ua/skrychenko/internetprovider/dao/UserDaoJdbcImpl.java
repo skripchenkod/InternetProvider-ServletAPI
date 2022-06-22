@@ -15,6 +15,7 @@ public class UserDaoJdbcImpl implements UserDao {
     private final String SQL_FIND_USER_BY_NAME = "SELECT * FROM users WHERE username = ?";
     private final String SQL_LOGIN = "SELECT * FROM users WHERE username = ? AND password = ?";
     private final String SQL_SELECT_ROLE = "SELECT name  FROM role WHERE id = (SELECT  users.role_id FROM users WHERE username = ?)";
+    private final String SQL_EDIT_STATUS = "UPDATE balance SET status = ? WHERE id = (SELECT users.balance_id FROM users WHERE username = ?)";
     private final DataSource dataSource = PostgresConfig.getInstance();
     private Connection connection;
 
@@ -125,6 +126,20 @@ public class UserDaoJdbcImpl implements UserDao {
 
         }
         return unKnownRole;
+    }
+
+    @Override
+    public void editStatusOfBalance(String userName, boolean status) {
+        try {
+            this.connection = dataSource.getConnection();
+
+            PreparedStatement ps = connection.prepareStatement(SQL_EDIT_STATUS);
+            ps.setBoolean(1, status);
+            ps.setString(2, userName);
+            ps.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }
 

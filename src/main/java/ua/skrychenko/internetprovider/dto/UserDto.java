@@ -3,10 +3,18 @@ package ua.skrychenko.internetprovider.dto;
 public class UserDto {
     private String userName;
     private String password;
+    private String status;
 
     public UserDto(String userName, String password) {
         this.userName = userName;
         this.password = password;
+
+    }
+
+    public UserDto(String userName, String password, String status) {
+        this.userName = userName;
+        this.password = password;
+        this.status = status;
     }
 
     public UserDto() {
@@ -26,6 +34,14 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
