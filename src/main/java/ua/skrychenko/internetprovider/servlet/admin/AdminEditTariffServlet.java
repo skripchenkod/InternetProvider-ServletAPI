@@ -6,7 +6,7 @@ import ua.skrychenko.internetprovider.dto.TariffDto;
 import ua.skrychenko.internetprovider.dto.UserDto;
 import ua.skrychenko.internetprovider.service.AdminPageService;
 
-import javax.servlet.ServletException;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,12 +19,12 @@ public class AdminEditTariffServlet extends HttpServlet {
     AdminPageService service = new AdminPageService();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String[] pathInfo = req.getPathInfo().split("/");
         String id = pathInfo[1];
 

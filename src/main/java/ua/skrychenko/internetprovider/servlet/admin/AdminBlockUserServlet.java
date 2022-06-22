@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("adminPage/blockUser")
+@WebServlet("/adminPage/blockUser")
 public class AdminBlockUserServlet extends HttpServlet {
 
     AdminPageService service = new AdminPageService();
