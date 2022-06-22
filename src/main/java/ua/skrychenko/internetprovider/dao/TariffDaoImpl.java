@@ -27,7 +27,7 @@ public class TariffDaoImpl implements TariffDao {
                 ps.setInt(2, idInt);
                 ps.execute();
             }
-            if(!newPrice.equals("")){
+            if (!newPrice.equals("")) {
                 PreparedStatement ps = connection.prepareStatement(SQL_EDIT_PRICE_OF_TARIFF);
                 ps.setInt(1, Integer.parseInt(newPrice));
                 ps.setInt(2, idInt);

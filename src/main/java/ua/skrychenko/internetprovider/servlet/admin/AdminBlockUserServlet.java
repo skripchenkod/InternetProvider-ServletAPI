@@ -26,6 +26,6 @@ public class AdminBlockUserServlet extends HttpServlet {
         ObjectMapper objectMapper = new ObjectMapper();
         UserDto userDto = objectMapper.readValue(req.getInputStream(), UserDto.class);
 
-        service.editStatusOfUserBalance(userDto.getUserName(),userDto.getStatus());
+        service.editStatusOfUserBalance(userDto.getUserName(), userDto.getStatus());
     }
 }

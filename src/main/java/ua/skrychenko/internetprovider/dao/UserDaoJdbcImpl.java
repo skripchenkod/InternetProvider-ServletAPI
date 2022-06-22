@@ -137,7 +137,7 @@ public class UserDaoJdbcImpl implements UserDao {
             ps.setBoolean(1, status);
             ps.setString(2, userName);
             ps.execute();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
