@@ -9,13 +9,6 @@ public class TariffDto {
         this.price = price;
     }
 
-    public TariffDto(String name) {
-        this.name = name;
-    }
-
-    public TariffDto() {
-    }
-
     public String getName() {
         return name;
     }
@@ -30,5 +23,10 @@ public class TariffDto {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return name + " " + price;
     }
 }

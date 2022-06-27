@@ -1,0 +1,51 @@
+package ua.skrychenko.internetprovider.dao;
+
+import ua.skrychenko.internetprovider.config.PostgresConfig;
+import ua.skrychenko.internetprovider.entity.ServiceEntity;
+import ua.skrychenko.internetprovider.entity.TariffEntity;
+
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ServiceDaoImpl implements ServiceDao{
+
+    private String SQL_GET_ALL_SERVICE = "SELECT service.name as service_name, tariff.name as tariff_name, tariff.price FROM service, tariff WHERE service.id = tariff.service_id";
+
+    private final DataSource dataSource = PostgresConfig.getInstance();
+    private Connection connection;
+
+
+    @Override
+    public Map<ServiceEntity, List<TariffEntity>> getAll(){
+        Map<ServiceEntity, List<TariffEntity>> map = new HashMap<>();
+        try {
+            this.connection = dataSource.getConnection();
+
+            Statement ps = connection.createStatement();
+            ResultSet rs = ps.executeQuery(SQL_GET_ALL_SERVICE);
+
+
+            while (rs.next()) {
+                ServiceEntity serviceEntity = new ServiceEntity(rs.getString("service_name"));
+                TariffEntity tariffEntity = new TariffEntity(rs.getString("tariff_name"), rs.getString("price"));
+
+                if(map.containsKey(serviceEntity)){
+                    map.get(serviceEntity).add(tariffEntity);
+                } else {
+                    List<TariffEntity> tariffEntities = new ArrayList<>();
+                    tariffEntities.add(tariffEntity);
+                    map.put(serviceEntity, tariffEntities);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+}

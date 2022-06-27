@@ -1,11 +1,15 @@
 package ua.skrychenko.internetprovider.dao;
 
 import ua.skrychenko.internetprovider.config.PostgresConfig;
+import ua.skrychenko.internetprovider.entity.TariffEntity;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -15,6 +19,7 @@ public class TariffDaoImpl implements TariffDao {
     private final String SQL_EDIT_TARIFF = "UPDATE tariff SET";
     private final String SUB_SQL_EDIT_TARIFF = " WHERE id = ?";
     private final String SQL_DELETE_TARIFF = "DELETE FROM tariff WHERE id = ?";
+    private final String SQL_GET_TARIFF = "SELECT tariff.id, tariff.name, tariff.price FROM tariff  JOIN service ON tariff.service_id = service.id WHERE service.name = ?";
 
     private final DataSource dataSource = PostgresConfig.getInstance();
     private Connection connection;
@@ -61,11 +66,7 @@ public class TariffDaoImpl implements TariffDao {
     public void deleteTariff(int id) {
         try {
             this.connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        try {
             PreparedStatement ps = connection.prepareStatement(SQL_DELETE_TARIFF);
             ps.setInt(1, id);
             ps.execute();
@@ -73,5 +74,25 @@ public class TariffDaoImpl implements TariffDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<TariffEntity> getTariff(String service) {
+        List<TariffEntity> tariffEntities = new ArrayList<>();
+        try {
+            this.connection = dataSource.getConnection();
+
+            PreparedStatement ps = connection.prepareStatement(SQL_GET_TARIFF);
+            ps.setString(1, service);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                tariffEntities.add(new TariffEntity(rs.getInt("id"), rs.getString("name"), rs.getString("price")));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tariffEntities;
     }
 }

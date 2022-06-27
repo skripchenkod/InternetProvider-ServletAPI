@@ -1,11 +1,17 @@
 package ua.skrychenko.internetprovider.dao;
 
+import ua.skrychenko.internetprovider.entity.BalanceEntity;
 import ua.skrychenko.internetprovider.entity.UserEntity;
 
+import java.util.List;
+
 public interface BalanceDao {
-    public int createBalance(UserEntity userEntity);
+    int createBalance(UserEntity userEntity);
 
-    public void topUpBalance(int userId, int sum);
+    void topUpBalance(String userName, int sum);
 
-    public void topDownBalance(int userID, int sum);
+    void topDownBalance(String userName, int sum);
+
+    List<BalanceEntity> getBalance(String userName);
+
 }
