@@ -1,7 +1,6 @@
 package ua.skrychenko.internetprovider.dao;
 
 import ua.skrychenko.internetprovider.config.PostgresConfig;
-import ua.skrychenko.internetprovider.dto.BalanceDto;
 import ua.skrychenko.internetprovider.entity.BalanceEntity;
 import ua.skrychenko.internetprovider.entity.UserEntity;
 
@@ -20,7 +19,6 @@ public class BalanceDaoImpl implements BalanceDao {
 
     private final DataSource dataSource = PostgresConfig.getInstance();
     private Connection connection;
-    UserDao userDao = new UserDaoJdbcImpl();
 
     @Override
     public int createBalance(UserEntity userEntity) {
@@ -46,8 +44,7 @@ public class BalanceDaoImpl implements BalanceDao {
     }
 
     @Override
-    public void topUpBalance(String userName, int sum) {
-        userDao.editStatusOfBalance(userName, true);
+    public void editBalance(String userName, int sum) {
         try {
             this.connection = dataSource.getConnection();
 
@@ -59,12 +56,6 @@ public class BalanceDaoImpl implements BalanceDao {
         } catch (SQLException s) {
             s.printStackTrace();
         }
-    }
-
-    @Override
-    public void topDownBalance(int id, String userName) {
-        userDao.setService(id, userName);
-        topUpBalance(userName, -getPriceOfTariff(id));
     }
 
     @Override
@@ -99,7 +90,7 @@ public class BalanceDaoImpl implements BalanceDao {
             while (rs.next())
                 price = rs.getInt("price");
 
-        }catch (SQLException s){
+        } catch (SQLException s) {
             s.printStackTrace();
         }
         return price;
@@ -119,7 +110,6 @@ public class BalanceDaoImpl implements BalanceDao {
                 sum = rs.getInt("sum");
 
             if (getPriceOfTariff(idTariff) > sum) {
-                userDao.editStatusOfBalance(userName, false);
                 return false;
             }
 

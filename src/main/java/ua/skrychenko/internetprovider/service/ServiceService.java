@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ServiceService {
-    ServiceDao serviceDao= new ServiceDaoImpl();
-    TariffDao tariffDao = new TariffDaoImpl();
-    TariffMapper tariffMapper = new TariffMapper();
+    private final ServiceDao serviceDao= new ServiceDaoImpl();
+    private final TariffDao tariffDao = new TariffDaoImpl();
+    private final TariffMapper tariffMapper = new TariffMapper();
 
     public Map<ServiceEntity, List<TariffEntity>> getAll(){
         return serviceDao.getAll();

@@ -1,4 +1,4 @@
-package ua.skrychenko.internetprovider.servlet.guest;
+package ua.skrychenko.internetprovider.servlet.user;
 
 import ua.skrychenko.internetprovider.dto.BalanceDto;
 import ua.skrychenko.internetprovider.service.BalanceService;
@@ -12,12 +12,12 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/guestPage/balance/*")
-public class GuestBalancePage extends HttpServlet {
+public class UserBalancePage extends HttpServlet {
 
     BalanceService service = new BalanceService();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String[] pathInfo = req.getPathInfo().split("/");
         String user = pathInfo[1];
         List<BalanceDto> balanceDtos = service.getBalance(user);

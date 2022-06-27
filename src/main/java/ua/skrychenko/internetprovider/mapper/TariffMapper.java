@@ -16,7 +16,4 @@ public class TariffMapper {
         }
         return tariffsDto;
     }
-
-
-
 }

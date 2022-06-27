@@ -8,9 +8,7 @@ import java.util.List;
 public interface BalanceDao {
     int createBalance(UserEntity userEntity);
 
-    void topUpBalance(String userName, int sum);
-
-    void topDownBalance(int id, String userName);
+    void editBalance(String userName, int sum);
 
     List<BalanceEntity> getBalance(String userName);
 

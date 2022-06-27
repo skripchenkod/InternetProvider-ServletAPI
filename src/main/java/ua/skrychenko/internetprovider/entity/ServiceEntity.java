@@ -49,9 +49,6 @@ public class ServiceEntity {
 
     @Override
     public String toString() {
-        return
-                name;
+        return name;
     }
-
-
 }

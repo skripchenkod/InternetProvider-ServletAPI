@@ -61,7 +61,7 @@ public class ServiceDaoImpl implements ServiceDao {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                information += rs.getString("service_name") +" "+ rs.getString("tariff_name") + "\n";
+                information += rs.getString("service_name") + " " + rs.getString("tariff_name") + "\n";
 
             }
         } catch (SQLException s) {

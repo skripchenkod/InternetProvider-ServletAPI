@@ -4,8 +4,8 @@ import ua.skrychenko.internetprovider.dao.*;
 
 public class AdminPageService {
 
-    TariffDao tariffDao = new TariffDaoImpl();
-    UserDao userDao = new UserDaoJdbcImpl();
+    private final TariffDao tariffDao = new TariffDaoImpl();
+    private final UserDao userDao = new UserDaoJdbcImpl();
 
     public void editTariff(String id, String newName, String newPrice) {
 
