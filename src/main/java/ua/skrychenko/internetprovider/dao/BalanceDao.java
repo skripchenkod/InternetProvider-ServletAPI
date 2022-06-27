@@ -15,5 +15,4 @@ public interface BalanceDao {
     boolean checkBalance(int id, String userName);
 
     int getPriceOfTariff(int id);
-
 }

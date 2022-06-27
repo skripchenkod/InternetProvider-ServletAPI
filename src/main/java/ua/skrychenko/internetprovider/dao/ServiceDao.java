@@ -10,5 +10,4 @@ public interface ServiceDao {
     Map<ServiceEntity, List<TariffEntity>> getAll();
 
     String getServiceByName(String userName);
-
 }
