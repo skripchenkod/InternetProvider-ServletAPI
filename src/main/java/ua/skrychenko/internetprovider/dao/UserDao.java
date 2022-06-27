@@ -14,4 +14,6 @@ public interface UserDao {
     String selectRole(UserEntity userEntity);
 
     void editStatusOfBalance(String userName, boolean status);
+
+    void setService(int idTariff, String userName);
 }

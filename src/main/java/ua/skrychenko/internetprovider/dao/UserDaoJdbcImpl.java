@@ -16,6 +16,8 @@ public class UserDaoJdbcImpl implements UserDao {
     private final String SQL_LOGIN = "SELECT * FROM users WHERE username = ? AND password = ?";
     private final String SQL_SELECT_ROLE = "SELECT name  FROM role WHERE id = (SELECT  users.role_id FROM users WHERE username = ?)";
     private final String SQL_EDIT_STATUS = "UPDATE balance SET status = ? WHERE id = (SELECT users.balance_id FROM users WHERE username = ?)";
+    private final String SQL_SET_SERVICE = "INSERT INTO users_services(user_id, service_id, tariff_id) VALUES ((SELECT id from users WHERE username = ?),(SELECT  tariff.service_id FROM tariff WHERE tariff.id = ?),?);";
+
     private final DataSource dataSource = PostgresConfig.getInstance();
     private Connection connection;
 
@@ -139,6 +141,22 @@ public class UserDaoJdbcImpl implements UserDao {
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setService(int idTariff, String userName) {
+        try {
+            this.connection = dataSource.getConnection();
+
+            PreparedStatement ps = connection.prepareStatement(SQL_SET_SERVICE);
+            ps.setString(1, userName);
+            ps.setInt(2, idTariff);
+            ps.setInt(3, idTariff);
+            ps.execute();
+
+        } catch (SQLException s) {
+            s.printStackTrace();
         }
     }
 }

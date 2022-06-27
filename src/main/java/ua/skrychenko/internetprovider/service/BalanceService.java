@@ -19,4 +19,13 @@ public class BalanceService {
     public void topUp(String userName, int sum){
          balanceDao.topUpBalance(userName, sum);
     }
+
+    public boolean checkBalance(int id, String userName){
+       return balanceDao.checkBalance(id, userName);
+    }
+
+    public void topDown(int id, String userName){
+        balanceDao.topDownBalance(id, userName);
+    }
+
 }

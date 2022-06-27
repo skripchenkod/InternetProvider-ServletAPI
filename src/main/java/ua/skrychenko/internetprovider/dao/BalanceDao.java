@@ -10,8 +10,12 @@ public interface BalanceDao {
 
     void topUpBalance(String userName, int sum);
 
-    void topDownBalance(String userName, int sum);
+    void topDownBalance(int id, String userName);
 
     List<BalanceEntity> getBalance(String userName);
+
+    boolean checkBalance(int id, String userName);
+
+    int getPriceOfTariff(int id);
 
 }

@@ -16,8 +16,8 @@ import java.util.stream.Stream;
 
 public class TariffDaoImpl implements TariffDao {
 
-    private final String SQL_EDIT_TARIFF = "UPDATE tariff SET";
-    private final String SUB_SQL_EDIT_TARIFF = " WHERE id = ?";
+    private final String SQL_EDIT_TARIFF_SUB_ONE = "UPDATE tariff SET";
+    private final String SQL_EDIT_TARIFF_SUB_TWO = " WHERE id = ?";
     private final String SQL_DELETE_TARIFF = "DELETE FROM tariff WHERE id = ?";
     private final String SQL_GET_TARIFF = "SELECT tariff.id, tariff.name, tariff.price FROM tariff  JOIN service ON tariff.service_id = service.id WHERE service.name = ?";
 
@@ -40,7 +40,7 @@ public class TariffDaoImpl implements TariffDao {
             }
             String result = Stream.of(nameSql, priceSql).filter(Objects::nonNull).collect(Collectors.joining(","));
 
-            PreparedStatement ps = connection.prepareStatement(SQL_EDIT_TARIFF + result + SUB_SQL_EDIT_TARIFF);
+            PreparedStatement ps = connection.prepareStatement(SQL_EDIT_TARIFF_SUB_ONE + result + SQL_EDIT_TARIFF_SUB_TWO);
             if (nameSql != null && priceSql == null) {
                 ps.setString(1, newName);
                 ps.setInt(2, Integer.parseInt(id));

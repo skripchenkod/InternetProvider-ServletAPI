@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/guestPage/*")
+@WebServlet("/guestPage/balance/*")
 public class GuestBalancePage extends HttpServlet {
 
     BalanceService service = new BalanceService();
@@ -23,7 +23,7 @@ public class GuestBalancePage extends HttpServlet {
         List<BalanceDto> balanceDtos = service.getBalance(user);
 
         for (BalanceDto balanceDto : balanceDtos) {
-            resp.getWriter().write(balanceDtos.toString());
+            resp.getWriter().write(balanceDtos.toString() + balanceDto.getStatus());
         }
     }
 

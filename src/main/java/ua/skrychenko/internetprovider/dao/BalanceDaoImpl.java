@@ -16,9 +16,11 @@ public class BalanceDaoImpl implements BalanceDao {
     private final String SQL_RETURN_MAX_ID_OF_BALANCE = "SELECT MAX(id) FROM balance";
     private final String SQL_GET_BALANCE = "SELECT balance.id, balance.sum, balance.status FROM balance  JOIN users ON users.balance_id = balance.id WHERE users.username = ?";
     private final String SQL_TOP_UP = "UPDATE balance SET sum = balance.sum + ? WHERE balance.id = (SELECT users.balance_id FROM users WHERE username = ?)";
+    private final String SQL_GET_PRICE_OF_TARIFF = "SELECT price FROM tariff WHERE id = ?";
 
     private final DataSource dataSource = PostgresConfig.getInstance();
     private Connection connection;
+    UserDao userDao = new UserDaoJdbcImpl();
 
     @Override
     public int createBalance(UserEntity userEntity) {
@@ -45,25 +47,24 @@ public class BalanceDaoImpl implements BalanceDao {
 
     @Override
     public void topUpBalance(String userName, int sum) {
+        userDao.editStatusOfBalance(userName, true);
         try {
             this.connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
+
             PreparedStatement ps = connection.prepareStatement(SQL_TOP_UP);
             ps.setInt(1, sum);
             ps.setString(2, userName);
             ps.executeQuery();
 
-        }catch (SQLException s){
+        } catch (SQLException s) {
             s.printStackTrace();
         }
     }
 
     @Override
-    public void topDownBalance(String userName, int sum) {
-
+    public void topDownBalance(int id, String userName) {
+        userDao.setService(id, userName);
+        topUpBalance(userName, -getPriceOfTariff(id));
     }
 
     @Override
@@ -71,21 +72,60 @@ public class BalanceDaoImpl implements BalanceDao {
         List<BalanceEntity> balanceEntities = new ArrayList<>();
         try {
             this.connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
+
             PreparedStatement ps = connection.prepareStatement(SQL_GET_BALANCE);
             ps.setString(1, userName);
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
                 balanceEntities.add(new BalanceEntity(rs.getInt("id"), rs.getInt("sum"), rs.getBoolean("status")));
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return balanceEntities;
+    }
+
+    @Override
+    public int getPriceOfTariff(int id) {
+        int price = 0;
+        try {
+            this.connection = dataSource.getConnection();
+
+            PreparedStatement ps = connection.prepareStatement(SQL_GET_PRICE_OF_TARIFF);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+                price = rs.getInt("price");
+
+        }catch (SQLException s){
+            s.printStackTrace();
+        }
+        return price;
+    }
+
+    @Override
+    public boolean checkBalance(int idTariff, String userName) {
+        try {
+            this.connection = dataSource.getConnection();
+
+            PreparedStatement ps = connection.prepareStatement(SQL_GET_BALANCE);
+            ps.setString(1, userName);
+            ResultSet rs = ps.executeQuery();
+
+            int sum = 0;
+            while (rs.next())
+                sum = rs.getInt("sum");
+
+            if (getPriceOfTariff(idTariff) > sum) {
+                userDao.editStatusOfBalance(userName, false);
+                return false;
+            }
+
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+        return true;
     }
 }

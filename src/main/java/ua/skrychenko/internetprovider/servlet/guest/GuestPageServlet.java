@@ -1,6 +1,7 @@
 package ua.skrychenko.internetprovider.servlet.guest;
 
-import ua.skrychenko.internetprovider.dto.TariffDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ua.skrychenko.internetprovider.dto.BalanceDto;
 import ua.skrychenko.internetprovider.entity.ServiceEntity;
 import ua.skrychenko.internetprovider.entity.TariffEntity;
 import ua.skrychenko.internetprovider.service.BalanceService;
@@ -15,13 +16,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/guestPage")
+@WebServlet("/guestPage/*")
 public class GuestPageServlet extends HttpServlet {
 
     ServiceService serviceService = new ServiceService();
+    BalanceService balanceService = new BalanceService();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<ServiceEntity, List<TariffEntity>> map = serviceService.getAll();
         for (Map.Entry entry : map.entrySet()) {
             resp.getWriter().write(entry.getKey().toString() + entry.getValue() + "\n");
@@ -30,6 +32,17 @@ public class GuestPageServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        BalanceDto balanceDto = objectMapper.readValue(req.getInputStream(), BalanceDto.class);
+
+        String[] pathInfo = req.getPathInfo().split("/");
+        String user = pathInfo[1];
+
+        if (balanceService.checkBalance(balanceDto.getId(), user)){
+            balanceService.topDown(balanceDto.getId(), user);
+
+        }
+        else resp.getWriter().write("Not enough funds!!!");
 
     }
 }
