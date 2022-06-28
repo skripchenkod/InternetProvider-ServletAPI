@@ -23,7 +23,7 @@ public class UserPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Map<ServiceEntity, List<TariffEntity>> map = serviceService.getAll();
+        Map<ServiceEntity, List<TariffEntity>> map = serviceService.getAll(null);
         for (Map.Entry entry : map.entrySet()) {
             resp.getWriter().write(entry.getKey().toString() + entry.getValue() + "\n");
         }

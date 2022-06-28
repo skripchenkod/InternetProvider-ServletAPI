@@ -19,44 +19,21 @@ public class ServiceDaoImpl implements ServiceDao {
     private final DataSource dataSource = PostgresConfig.getInstance();
     private Connection connection;
 
-
-    @Override
-    public Map<ServiceEntity, List<TariffEntity>> getAll() {
-        Map<ServiceEntity, List<TariffEntity>> map = new HashMap<>();
-        try {
-            this.connection = dataSource.getConnection();
-
-            Statement ps = connection.createStatement();
-            ResultSet rs = ps.executeQuery(SQL_GET_ALL_SERVICE);
-
-
-            while (rs.next()) {
-                ServiceEntity serviceEntity = new ServiceEntity(rs.getString("service_name"));
-                TariffEntity tariffEntity = new TariffEntity(rs.getString("tariff_name"), rs.getString("price"));
-
-                if (map.containsKey(serviceEntity)) {
-                    map.get(serviceEntity).add(tariffEntity);
-                } else {
-                    List<TariffEntity> tariffEntities = new ArrayList<>();
-                    tariffEntities.add(tariffEntity);
-                    map.put(serviceEntity, tariffEntities);
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return map;
-    }
-
     @Override
     public Map<ServiceEntity, List<TariffEntity>> getAll(String sortBy) {
         Map<ServiceEntity, List<TariffEntity>> map = new HashMap<>();
+
         try {
             this.connection = dataSource.getConnection();
 
+            String SQL_GET_SERVICE = SQL_GET_ALL_SERVICE;
+
+            if (sortBy != null) {
+                SQL_GET_SERVICE += combineQuery(sortBy);
+            }
+
             Statement ps = connection.createStatement();
-            ResultSet rs = ps.executeQuery(combineQuery(sortBy));
+            ResultSet rs = ps.executeQuery(SQL_GET_SERVICE);
 
             while (rs.next()) {
                 ServiceEntity serviceEntity = new ServiceEntity(rs.getString("service_name"));
@@ -79,8 +56,8 @@ public class ServiceDaoImpl implements ServiceDao {
 
     private String combineQuery(String query) {
         if (query.equals("DESC")) {
-            return SQL_GET_ALL_SERVICE + " ORDER BY price DESC";
-        } else return SQL_GET_ALL_SERVICE + " ORDER BY price ASC";
+            return " ORDER BY price DESC";
+        } else return " ORDER BY price ASC";
     }
 
     @Override

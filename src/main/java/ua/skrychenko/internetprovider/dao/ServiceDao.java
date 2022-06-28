@@ -9,7 +9,5 @@ import java.util.Map;
 public interface ServiceDao {
     Map<ServiceEntity, List<TariffEntity>> getAll(String sortBy);
 
-    Map<ServiceEntity, List<TariffEntity>> getAll();
-
     String getServiceByName(String userName);
 }

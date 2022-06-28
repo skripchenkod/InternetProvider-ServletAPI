@@ -29,30 +29,34 @@ public class TariffDaoImpl implements TariffDao {
         try {
             this.connection = dataSource.getConnection();
 
-            String nameSql = null;
-
             int firstParameter = 1;
             int secondParameter = 2;
 
+            String nameSql = null;
+            String priceSql = null;
+
+            PreparedStatement ps = null;
+
             if (newName != null) {
                 nameSql = " name = ?";
-                PreparedStatement ps = connection.prepareStatement(combineQuery(nameSql, null));
+                ps = connection.prepareStatement(combineQuery(nameSql, null));
                 ps.setString(1, newName);
                 ps.setInt(2, Integer.parseInt(id));
                 firstParameter = 2;
                 secondParameter = 3;
-                ps.execute();
             }
 
             if (newPrice != null) {
-                String priceSql = " price = ?";
-                PreparedStatement ps = connection.prepareStatement(combineQuery(nameSql, priceSql));
+                priceSql = " price = ?";
+                ps = connection.prepareStatement(combineQuery(nameSql, priceSql));
                 ps.setString(1, newName);
                 ps.setInt(firstParameter, Integer.parseInt(newPrice));
                 ps.setInt(secondParameter, Integer.parseInt(id));
-                ps.execute();
             }
-        } catch (SQLException | NumberFormatException e) {
+
+            ps.execute();
+
+        } catch (SQLException | NumberFormatException | NullPointerException e) {
             e.printStackTrace();
         }
 

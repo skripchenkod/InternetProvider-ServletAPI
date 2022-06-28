@@ -21,10 +21,6 @@ public class ServiceService {
         return serviceDao.getAll(sortBy);
     }
 
-    public Map<ServiceEntity, List<TariffEntity>> getAll() {
-        return serviceDao.getAll();
-    }
-
     public List<TariffDto> getTariff(String service) {
         return tariffMapper.tariffEntitiesToDto(tariffDao.getTariff(service));
     }
