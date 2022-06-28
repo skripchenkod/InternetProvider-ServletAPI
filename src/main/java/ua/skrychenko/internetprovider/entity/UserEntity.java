@@ -60,5 +60,4 @@ public class UserEntity {
         this.userName = userName;
     }
 
-
 }

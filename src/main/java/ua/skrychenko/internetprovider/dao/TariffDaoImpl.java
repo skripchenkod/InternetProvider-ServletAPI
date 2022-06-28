@@ -30,36 +30,37 @@ public class TariffDaoImpl implements TariffDao {
             this.connection = dataSource.getConnection();
 
             String nameSql = null;
-            String priceSql = null;
+
+            int firstParameter = 1;
+            int secondParameter = 2;
 
             if (newName != null) {
                 nameSql = " name = ?";
-            }
-            if (newPrice != null) {
-                priceSql = " price = ?";
-            }
-            String result = Stream.of(nameSql, priceSql).filter(Objects::nonNull).collect(Collectors.joining(","));
-
-            PreparedStatement ps = connection.prepareStatement(SQL_EDIT_TARIFF_SUB_ONE + result + SQL_EDIT_TARIFF_SUB_TWO);
-            if (nameSql != null && priceSql == null) {
+                PreparedStatement ps = connection.prepareStatement(combineQuery(nameSql, null));
                 ps.setString(1, newName);
                 ps.setInt(2, Integer.parseInt(id));
+                firstParameter = 2;
+                secondParameter = 3;
                 ps.execute();
             }
-            if (nameSql == null && priceSql != null) {
-                ps.setInt(1, Integer.parseInt(newPrice));
-                ps.setInt(2, Integer.parseInt(id));
-            } else {
-                ps.setString(1, newName);
-                ps.setInt(2, Integer.parseInt(newPrice));
-                ps.setInt(3, Integer.parseInt(id));
-            }
-            ps.execute();
 
+            if (newPrice != null) {
+                String priceSql = " price = ?";
+                PreparedStatement ps = connection.prepareStatement(combineQuery(nameSql, priceSql));
+                ps.setString(1, newName);
+                ps.setInt(firstParameter, Integer.parseInt(newPrice));
+                ps.setInt(secondParameter, Integer.parseInt(id));
+                ps.execute();
+            }
         } catch (SQLException | NumberFormatException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private String combineQuery(String nameSql, String priceSql) {
+        String result = Stream.of(nameSql, priceSql).filter(Objects::nonNull).collect(Collectors.joining(","));
+        return SQL_EDIT_TARIFF_SUB_ONE + result + SQL_EDIT_TARIFF_SUB_TWO;
     }
 
     @Override

@@ -13,15 +13,19 @@ import java.util.List;
 import java.util.Map;
 
 public class ServiceService {
-    private final ServiceDao serviceDao= new ServiceDaoImpl();
+    private final ServiceDao serviceDao = new ServiceDaoImpl();
     private final TariffDao tariffDao = new TariffDaoImpl();
     private final TariffMapper tariffMapper = new TariffMapper();
 
-    public Map<ServiceEntity, List<TariffEntity>> getAll(){
+    public Map<ServiceEntity, List<TariffEntity>> getAll(String sortBy) {
+        return serviceDao.getAll(sortBy);
+    }
+
+    public Map<ServiceEntity, List<TariffEntity>> getAll() {
         return serviceDao.getAll();
     }
 
-    public List<TariffDto> getTariff(String service){
+    public List<TariffDto> getTariff(String service) {
         return tariffMapper.tariffEntitiesToDto(tariffDao.getTariff(service));
     }
 

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/guestPage/myServices/*")
+@WebServlet("/userPage/myServices/*")
 public class UserMyServicePage extends HttpServlet {
     ServiceDaoImpl serviceDao = new ServiceDaoImpl();
 

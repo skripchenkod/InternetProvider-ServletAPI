@@ -15,11 +15,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/guestPage/*")
+@WebServlet("/userPage/*")
 public class UserPageServlet extends HttpServlet {
 
-    ServiceService serviceService = new ServiceService();
-    BalanceService balanceService = new BalanceService();
+    private final ServiceService serviceService = new ServiceService();
+    private final BalanceService balanceService = new BalanceService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

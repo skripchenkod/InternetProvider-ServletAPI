@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BalanceMapper {
-    public List<BalanceDto> balanceEntitiesToDtos(List<BalanceEntity> balanceEntity){
+    public List<BalanceDto> balanceEntitiesToDtos(List<BalanceEntity> balanceEntity) {
         List<BalanceDto> balanceDtos = new ArrayList<>();
 
         for (BalanceEntity entity : balanceEntity) {

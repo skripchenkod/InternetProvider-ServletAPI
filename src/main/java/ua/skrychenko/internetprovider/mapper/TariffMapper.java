@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TariffMapper {
 
-    public List<TariffDto> tariffEntitiesToDto (List<TariffEntity> tariffEntities){
+    public List<TariffDto> tariffEntitiesToDto(List<TariffEntity> tariffEntities) {
         List<TariffDto> tariffsDto = new ArrayList<>();
 
         for (TariffEntity tariff : tariffEntities) {

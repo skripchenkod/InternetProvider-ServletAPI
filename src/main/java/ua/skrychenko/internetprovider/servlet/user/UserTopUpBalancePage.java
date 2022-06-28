@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/guestPage/topUpBalance/*")
+@WebServlet("/userPage/topUpBalance/*")
 public class UserTopUpBalancePage extends HttpServlet {
     BalanceService balanceService = new BalanceService();
 

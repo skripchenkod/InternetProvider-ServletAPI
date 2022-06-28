@@ -27,7 +27,7 @@ public class UserService {
         return isExist;
     }
 
-    public String chekUser(UserDto userDto){
-       return userDaoJdbc.selectRole(userMapper.userDtoToEntitySignIn(userDto));
+    public String chekUser(UserDto userDto) {
+        return userDaoJdbc.selectRole(userMapper.userDtoToEntitySignIn(userDto));
     }
 }

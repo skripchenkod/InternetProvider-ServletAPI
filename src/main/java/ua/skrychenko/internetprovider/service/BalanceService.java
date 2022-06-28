@@ -27,7 +27,7 @@ public class BalanceService {
         String error = "Not enough funds!";
         String success = "Connection successful!";
         if (balanceDao.checkBalance(id, userName)) {
-            userDao.setService(id,userName);
+            userDao.setService(id, userName);
             balanceDao.editBalance(userName, -balanceDao.getPriceOfTariff(id));
             return success;
         } else userDao.editStatusOfBalance(userName, false);
